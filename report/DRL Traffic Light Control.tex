@@ -1,0 +1,48 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Deep Reinforcement Learning for Traffic Light Control}
+
+\author{\IEEEauthorblockN{Ben Bekir Ertugrul}
+\IEEEauthorblockA{\textit{School of Engineering} \\
+\textit{Jönköping University}\\
+Jönköping, Sweden}
+}
+
+\maketitle
+
+\begin{abstract}
+This document is a model and instructions for \LaTeX.
+This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
+or Math in Paper Title or Abstract.
+\end{abstract}
+
+\begin{IEEEkeywords}
+component, formatting, style, styling, insert.
+\end{IEEEkeywords}
+
+\section{Introduction}
+- What are SUMO limitations?
+- Do we optimize traffic lights only for cars or also bikes, pedestrians, etc.
+- Do we focus on multiple intersections or just one?
+- Are we using acyclical or cyclical light switches? May one of them be more realistic than the other? 
+- Do we train on multiple scenarios, like “rush hours” and low traffic conditions, or do we only have normal traffic?
+- Do we use DQN or are there also other choices like PPO (is PPO able to combine with neural nets?)?
+
+test \cite{hutter}
+
+\bibliographystyle{IEEEtran}
+\bibliography{abrv,references}
+\end{document}
