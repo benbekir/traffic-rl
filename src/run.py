@@ -1,24 +1,15 @@
 from sumo_rl import SumoEnvironment
+from stable_baselines3 import PPO
 
-env = SumoEnvironment(net_file="simulations/networks/network1.net.xml",
-                      route_file="simulations/test.rou.xml", 
+NETWORK = "network1"
+
+env = SumoEnvironment(net_file=f"simulations/networks/{NETWORK}.net.xml",
+                      route_file=f"simulations/networks/{NETWORK}.rou.xml", 
                       single_agent=True, 
                       use_gui=False, # not working on mac
-                      sumo_warnings=True)
+                      sumo_warnings=True, 
+                      additional_sumo_cmd=f"--tripinfo-output simulations/recordings/{NETWORK}.xml") # record data to analyze agent performance
 
-# Reset the environment to start
-obs, info = env.reset()
-print("observation space:", env.observation_space)
-print("action space:", env.action_space)
-
-# Run for 10 steps to see cars move
-for i in range(10):
-    # Sample a random action (e.g., change light or stay)
-    action = env.action_space.sample()
-    
-    # Apply the action
-    next_obs, reward, terminated, truncated, info = env.step(action)
-    
-    print(f"Step {i}: Reward received: {reward}")
-
-env.close()
+model = PPO("MlpPolicy", env, verbose=1)
+model.learn(total_timesteps=1000)
+model.save("ppo_agent")

@@ -41,7 +41,44 @@ component, formatting, style, styling, insert.
 - Do we train on multiple scenarios, like “rush hours” and low traffic conditions, or do we only have normal traffic?
 - Do we use DQN or are there also other choices like PPO (is PPO able to combine with neural nets?)?
 
-test \cite{hutter}
+a good starting tutorial on how to generate traffic scenarios can be found here \cite{sumotutorial}.
+
+- at the end, compare normal (static) traffic light with our solution. if possible, the static traffic light control should be decently good. maybe its possible to use a real example?
+
+\section{Networks}
+
+\subsection{Jönköping}
+map of sweden downloaded here: https://download.geofabrik.de/europe/sweden.html
+geojson polygon object created here: https://geojson.io/
+
+\begin{figure}[h]
+\label{fig:geojson-filter}
+\centering
+\includegraphics[width=\columnwidth]{resources/geojson_filter.png}
+\caption{The filter (in grey) that defines the boundaries of the road network in Jönköping.}
+\end{figure}
+
+then, we used osmium and osmfilter to apply the polygon shape to the map of sweden. afterwards, we filter only for highways, except for those of the following types:
+
+\begin{itemize}
+    \item footway
+    \item path
+    \item pedestrian
+    \item steps
+    \item cycleway
+    \item bridleway
+\end{itemize}
+
+finally, we use the SUMO \textit{netconvert} tool to convert the map into a SUMO network.
+
+\subsubsection{Traffic Assignment Zones}
+Traffic Analysis Zones (TAZs) are spatial units used in transportation modeling and traffic studies to represent areas with similar travel behavior. A TAZ typically models a neighborhood or district, and serves
+as a fundamental unit for estimating travel demand. Each zone can be associated with socio-economic and
+demographic data, such as population, employment, and land use. (COPIED FROM \cite{sumotutorial}).
+
+since we have no information about the actual TAZ's in Jönköping, we create these zones randomly with the \textit{gridDistricts} tool provided by SUMO.
+
+\subsubsection{Rush Hours and Noise}
 
 \bibliographystyle{IEEEtran}
 \bibliography{abrv,references}
