@@ -9,6 +9,8 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{footmisc}
+\usepackage{url}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -50,6 +52,7 @@ a good starting tutorial on how to generate traffic scenarios can be found here 
 \subsection{Jönköping}
 map of sweden downloaded here: https://download.geofabrik.de/europe/sweden.html
 geojson polygon object created here: https://geojson.io/
+chosen geojson found here\footnote{\url{https://github.com/benbekir/traffic-rl/blob/main/simulations/networks/jkpg/artifacts/jkpg.geojson}}.
 
 \begin{figure}[h]
 \label{fig:geojson-filter}
@@ -72,11 +75,34 @@ then, we used osmium and osmfilter to apply the polygon shape to the map of swed
 finally, we use the SUMO \textit{netconvert} tool to convert the map into a SUMO network.
 
 \subsubsection{Traffic Assignment Zones}
+TODO: kick this section out since we dont do anything with this information
+
 Traffic Analysis Zones (TAZs) are spatial units used in transportation modeling and traffic studies to represent areas with similar travel behavior. A TAZ typically models a neighborhood or district, and serves
 as a fundamental unit for estimating travel demand. Each zone can be associated with socio-economic and
 demographic data, such as population, employment, and land use. (COPIED FROM \cite{sumotutorial}).
 
-since we have no information about the actual TAZ's in Jönköping, we create these zones randomly with the \textit{gridDistricts} tool provided by SUMO.
+since we have no information about the actual TAZ's in Jönköping, we create these zones randomly with tools provided by SUMO.
+there are two options: gridDistricts, and generateBidiDistricts.
+lets visualize them:
+
+\begin{figure}[h]
+\label{fig:taz-bidi}
+\centering
+\includegraphics[width=\columnwidth]{resources/taz_bidi.png}
+\caption{TAZ created with the generateBidiDistricts tool.}
+\end{figure}
+
+\begin{figure}[h]
+\label{fig:taz-grid}
+\centering
+\includegraphics[width=\columnwidth]{resources/taz_grid_250.png}
+\caption{TAZ created with the gridDistricts tool and with a grid width of 250.}
+\end{figure}
+
+we choose gridDistricts since it creates more realistic traffic assignment zones.
+
+\subsubsection{Demand Modeling}
+since there is no publicly available data regarding traffic assignment zones and demand in jönköping, we use the SUMO tool randomTrips \footnote{\url{https://sumo.dlr.de/docs/Tools/Trip.html#randomtripspy}} with the random seed set to 12 to randomly create trips. we create 3600 individual trips in total where a new trip is spawned into the simulation on every timestep.
 
 \subsubsection{Rush Hours and Noise}
 
