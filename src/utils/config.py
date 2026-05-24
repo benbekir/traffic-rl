@@ -9,7 +9,7 @@ RECORDINGS_DIR = Path("simulations/recordings")
 DEFAULT_DELTA_TIME = 5
 DEFAULT_NUM_SECONDS = 3600 + 4800 # 8400
 
-def make_env(recording_name: str = None) -> SumoMultiAgentEnv:
+def make_env(use_gui: bool = False, recording_name: str = None) -> SumoMultiAgentEnv:
     # Ensure recording directory exists
     RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
     
@@ -20,7 +20,7 @@ def make_env(recording_name: str = None) -> SumoMultiAgentEnv:
     raw_env = parallel_env(
         net_file=str(NETWORK_DIR / f"{NETWORK}.net.xml"),
         route_file=str(NETWORK_DIR / f"{NETWORK}.rou.xml"),
-        use_gui=False,
+        use_gui=use_gui,
         sumo_warnings=True,
         delta_time=DEFAULT_DELTA_TIME,
         num_seconds=DEFAULT_NUM_SECONDS,

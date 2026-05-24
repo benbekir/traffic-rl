@@ -1,2 +1,4 @@
 sumo-rl
 stable-baselines3
+tqdm
+rich
