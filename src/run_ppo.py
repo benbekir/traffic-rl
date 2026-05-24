@@ -1,29 +1,4 @@
 from stable_baselines3 import PPO
-from utils.config import make_env
+from experiments.runner import run_loaded_model
 
-def run_ppo_agent() -> None:
-    """Runs a full simulation episode using a proximal policy agent.
-    """
-
-    env = make_env(recording_name="jkpg_ppo.xml")
-    env.allow_reset = False
-
-    model = PPO.load("ppo_agent.zip", env=env)
-
-    obs = env.reset()
-
-    try:
-        while True:
-            actions, _ = model.predict(obs, deterministic=True)
-            obs, rewards, dones, infos = env.step(actions)
-            
-            if any(dones):
-                break
-                
-    except Exception as e:
-        print(f"An error occurred during evaluation execution: {e}")
-    finally:
-        env.close()
-        
-if __name__ == "__main__":
-    run_ppo_agent()
+run_loaded_model(PPO, checkpoint_path="ppo_agent.zip", recording_name="jkpg_ppo.xml")

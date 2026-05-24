@@ -1,6 +1,6 @@
 from pathlib import Path
 from sumo_rl import parallel_env
-from utils.sumo_multi_agent_env import SumoMultiAgentEnv
+from envs.sumo_multi_agent_env import SumoMultiAgentEnv
 
 NETWORK = "jkpg"
 NETWORK_DIR = Path("simulations/networks/jkpg")
