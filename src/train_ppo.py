@@ -1,19 +1,15 @@
 from stable_baselines3 import PPO
 from experiments.runner import train_model
-from envs.factory import DEFAULT_DELTA_TIME, DEFAULT_NUM_SECONDS
-
-updates_per_episode = 10
-steps_per_episode = DEFAULT_NUM_SECONDS // DEFAULT_DELTA_TIME
-n_steps = steps_per_episode // updates_per_episode
 
 train_model(
     PPO,
     checkpoint_path="ppo_agent",
-    total_training_episodes=25,
+    total_training_episodes=100, # final run should be about 300
     model_kwargs={
-        "n_steps": n_steps,
-        "batch_size": 128,
+        "n_steps": 512,
+        "batch_size": 256,
+        "n_epochs": 10,
         "learning_rate": 3e-4,
-        "ent_coef": 0.01,
+        "ent_coef": 0.05,
     },
 )

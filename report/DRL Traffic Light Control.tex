@@ -15,7 +15,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Deep Reinforcement Learning for Traffic Light Control}
+\title{Deep Reinforcement Learning for Traffic Light Control in Jönköping}
 
 \author{\IEEEauthorblockN{Ben Bekir Ertugrul}
 \IEEEauthorblockA{\textit{School of Engineering} \\
@@ -36,10 +36,10 @@ component, formatting, style, styling, insert.
 \end{IEEEkeywords}
 
 \section{Introduction}
+\subsection{Motivation}
+
+\subsection{Structure of this paper}
 - What are SUMO limitations?
-- Do we optimize traffic lights only for cars or also bikes, pedestrians, etc.
-- Do we focus on multiple intersections or just one?
-- Are we using acyclical or cyclical light switches? May one of them be more realistic than the other? 
 - Do we train on multiple scenarios, like “rush hours” and low traffic conditions, or do we only have normal traffic?
 - Do we use DQN or are there also other choices like PPO (is PPO able to combine with neural nets?)?
 
@@ -47,9 +47,16 @@ a good starting tutorial on how to generate traffic scenarios can be found here 
 
 - at the end, compare normal (static) traffic light with our solution. if possible, the static traffic light control should be decently good. maybe its possible to use a real example?
 
-\section{Networks}
+\section{Background}
+\subsection{SUMO}
+\subsection{Proximal Policy Optimization}
+\subsection{Deep Q Networks}
 
-\subsection{Jönköping}
+\section{Related Works}
+
+\section{Environment}
+
+\subsection{Network}
 map of sweden downloaded here: https://download.geofabrik.de/europe/sweden.html
 geojson polygon object created here: https://geojson.io/
 chosen geojson found here\footnote{\url{https://github.com/benbekir/traffic-rl/blob/main/simulations/networks/jkpg/artifacts/jkpg.geojson}}.
@@ -74,7 +81,7 @@ then, we used osmium and osmfilter to apply the polygon shape to the map of swed
 
 finally, we use the SUMO \textit{netconvert} tool to convert the map into a SUMO network.
 
-as for limitations, we extract lanes, intersections, and traffic lights, but do not have information about the speed limits on the roads. therefore, our simulation will treat every road the same.
+as for limitations, we extract lanes including speed limit, intersections, and traffic lights. however, since we only model car traffic and not pedestrians, all pedestrian traffic lights will behave completely deterministic. this does not represent the real world where pedestrians can press a button on the traffic light to trigger a faster phase switching.
 
 \begin{figure}[h]
 \label{fig:net}
@@ -84,24 +91,28 @@ as for limitations, we extract lanes, intersections, and traffic lights, but do 
 \end{figure}
 
 \subsubsection{Demand Modeling}
-since there is no publicly available data regarding traffic assignment zones and demand in jönköping, we use the SUMO tool randomTrips \footnote{\url{https://sumo.dlr.de/docs/Tools/Trip.html#randomtripspy}} with the random seed set to 12 to randomly create trips. we create 3600 individual trips in total where a new trip is spawned into the simulation on every timestep.
+since there is no publicly available data regarding traffic assignment zones and demand in jönköping, we use the SUMO tool randomTrips \footnote{\url{https://sumo.dlr.de/docs/Tools/Trip.html#randomtripspy}} to randomly create trips. we create 3600 individual trips in total where a new trip is spawned into the simulation on every timestep.
 
 \subsubsection{Rush Hours and Noise}
 im not sure about this yet
 
-\subsubsection{Detectors}
-To retrieve information that our agents can use, there are a couple of detector options that we could add to our environment (see \url{https://sumo.dlr.de/docs/Simulation/Output/#simulated_detectors}).
+\subsection{Observations}
 
-\begin{itemize}
-    \item Inductive loop detectors
-    \item Instant induction loops
-    \item Lane area detectors
-    \item Multi-Entry-Exit detectors
-    \item Route detectors
-\end{itemize}
+- lane density: density is calculated on the entire lane, by considering how many cars are present in the lane and how many cars could potentially fit in the lane. \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L297}
 
-we decide to use lane area detectors since they simulate vehicle tracking cameras, which gain popularity in the real world (i think in china especially) and provide rich information.  
-these detectors are placed on every lane at every intersection that has a traffic light. the maximum length of the recorded lane segment is 25 meter.
+- queue information: queue is calculated by counting the number of cars that are stopped at the traffic light, waiting for the green signal. \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L309}
+
+\subsection{Actions}
+
+\subsection{Reward}
+
+- predefined reward functions: \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L347}
+
+\section{Experiments}
+
+\section{Results}
+
+\section{Conclusion}
 
 \bibliographystyle{IEEEtran}
 \bibliography{abrv,references}

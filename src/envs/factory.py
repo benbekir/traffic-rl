@@ -7,7 +7,7 @@ NETWORK_DIR = Path("simulations/networks/jkpg")
 RECORDINGS_DIR = Path("simulations/recordings")
 
 DEFAULT_DELTA_TIME = 5
-DEFAULT_NUM_SECONDS = 3600 + 4800 # 8400
+DEFAULT_NUM_SECONDS = 3600 + 7200
 
 def make_env(use_gui: bool = False, recording_name: str = None) -> SumoMultiAgentEnv:
     # Ensure recording directory exists
@@ -24,7 +24,8 @@ def make_env(use_gui: bool = False, recording_name: str = None) -> SumoMultiAgen
         sumo_warnings=True,
         delta_time=DEFAULT_DELTA_TIME,
         num_seconds=DEFAULT_NUM_SECONDS,
-        additional_sumo_cmd=additional_cmd if additional_cmd else None
+        additional_sumo_cmd=additional_cmd if additional_cmd else None,
+        reward_fn = "queue"
     )
     
     return SumoMultiAgentEnv(raw_env)
