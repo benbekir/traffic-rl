@@ -7,7 +7,7 @@ def train_model(
     model_cls: type[BaseAlgorithm],
     *,
     checkpoint_path: str,
-    curriculum_stages: list[float] = [0.5, 0.75, 1.0], 
+    curriculum_stages: list[float] = [0.75, 0.875, 1.0], 
     episodes_per_curriculum: int = 30,
     model_kwargs: dict[str, Any]
 ) -> None:
