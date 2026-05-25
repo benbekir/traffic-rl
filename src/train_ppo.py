@@ -4,7 +4,6 @@ from experiments.runner import train_model
 train_model(
     PPO,
     checkpoint_path="ppo_agent",
-    episodes_per_curriculum=30,
     model_kwargs={
         "n_steps": 512,
         "batch_size": 256,

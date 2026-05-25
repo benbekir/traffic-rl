@@ -4,7 +4,6 @@ from experiments.runner import train_model
 train_model(
     DQN,
     checkpoint_path="dqn_agent",
-    episodes_per_curriculum=10,
     model_kwargs={
         "learning_rate": 1e-3,
         "buffer_size": 100000,
