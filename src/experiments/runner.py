@@ -7,27 +7,41 @@ def train_model(
     model_cls: type[BaseAlgorithm],
     *,
     checkpoint_path: str,
-    total_training_episodes: int,
-    model_kwargs: dict[str, Any],
+    curriculum_stages: list[float] = [0.5, 0.75, 1.0], 
+    episodes_per_curriculum: int = 30,
+    model_kwargs: dict[str, Any]
 ) -> None:
-    env = make_env()
+    model = None
 
-    try:
-        steps_per_episode = DEFAULT_NUM_SECONDS // DEFAULT_DELTA_TIME
-        total_training_steps = steps_per_episode * env.num_envs * total_training_episodes
+    for i, scale in enumerate(curriculum_stages):
+        print(f"Starting curriculum stage {i+1}/{len(curriculum_stages)}: (Traffic Scale: {scale})")
+        env = make_env(scale=scale)
+        
+        try:
+            steps_per_episode = DEFAULT_NUM_SECONDS // DEFAULT_DELTA_TIME
+            total_training_steps = steps_per_episode * env.num_envs * episodes_per_curriculum
+            
+            if model is None:
+                resolved_kwargs = dict(model_kwargs)
+                model = model_cls(
+                    "MlpPolicy",
+                    env,
+                    verbose=1,
+                    **resolved_kwargs,
+                )
+            else:
+                model.set_env(env)
+            
+            model.learn(total_timesteps=total_training_steps, progress_bar=True)
+            stage_checkpoint = f"{checkpoint_path}_stage_{int(scale*100)}"
+            model.save(stage_checkpoint)
 
-        resolved_kwargs = dict(model_kwargs)
-        model = model_cls(
-            "MlpPolicy",
-            env,
-            verbose=1,
-            **resolved_kwargs,
-        )
+        finally:
+            env.close()
 
-        model.learn(total_timesteps=total_training_steps, progress_bar=True)
+    if model is not None:
         model.save(checkpoint_path)
-    finally:
-        env.close()
+
 
 def run_loaded_model(
     model_cls: type[BaseAlgorithm],
@@ -35,7 +49,7 @@ def run_loaded_model(
     checkpoint_path: str,
     recording_name: str,
 ) -> None:
-    env = make_env(recording_name=recording_name)
+    env = make_env(scale=1.0, recording_name=recording_name)
     env.allow_reset = False
 
     try:

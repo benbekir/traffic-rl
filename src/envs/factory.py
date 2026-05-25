@@ -1,21 +1,21 @@
 from pathlib import Path
 from sumo_rl import parallel_env
-from envs.sumo_multi_agent_env import SumoMultiAgentEnv
+from envs.gridlock_monitor import GridlockMonitor
 
 NETWORK = "jkpg"
 NETWORK_DIR = Path("simulations/networks/jkpg")
 RECORDINGS_DIR = Path("simulations/recordings")
 
 DEFAULT_DELTA_TIME = 5
-DEFAULT_NUM_SECONDS = 3600 + 7200
+DEFAULT_NUM_SECONDS = 3600 + 4800
 
-def make_env(use_gui: bool = False, recording_name: str = None) -> SumoMultiAgentEnv:
+def make_env(scale: float = 1, max_halting_vehicles: int = 800, use_gui: bool = False, recording_name: str = None):
     # Ensure recording directory exists
     RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
     
-    additional_cmd = ""
+    additional_cmd = f"--scale {scale}"
     if recording_name:
-        additional_cmd = f"--tripinfo-output {RECORDINGS_DIR / recording_name}"
+        additional_cmd += f" --tripinfo-output {RECORDINGS_DIR / recording_name}"
 
     raw_env = parallel_env(
         net_file=str(NETWORK_DIR / f"{NETWORK}.net.xml"),
@@ -28,4 +28,4 @@ def make_env(use_gui: bool = False, recording_name: str = None) -> SumoMultiAgen
         reward_fn = "queue"
     )
     
-    return SumoMultiAgentEnv(raw_env)
+    return GridlockMonitor(raw_env, max_halting_vehicles=max_halting_vehicles)

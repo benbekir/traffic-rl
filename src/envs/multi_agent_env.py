@@ -2,12 +2,13 @@ import gymnasium as gym
 import numpy as np
 from stable_baselines3.common.vec_env.base_vec_env import VecEnv
 
-class SumoMultiAgentEnv(VecEnv):
-    def __init__(self, raw_env, allow_reset: bool = True):
+class MultiAgentEnv(VecEnv):
+    allow_reset: bool = True
+
+    def __init__(self, raw_env):
         self.env = raw_env
         self.agent_ids = list(self.env.possible_agents)
         num_envs = len(self.agent_ids)
-        self.allow_reset = allow_reset
 
         # max observation size for uniform env
         self.max_obs_size = max(
