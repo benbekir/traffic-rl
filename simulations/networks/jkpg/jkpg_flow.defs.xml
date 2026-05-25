@@ -1,0 +1,181 @@
+<routes>
+    <vType id="car" vClass="passenger" accel="2.6" decel="4.5" sigma="0.5" length="5.0" minGap="2.5" maxSpeed="13.89"/>
+
+    <flow id="wu_os_to_od" type="car" begin="0" end="2000" vehsPerHour="36" from="-45494495" to="23156030#6"/>
+    <flow id="wu_os_to_sl" type="car" begin="0" end="2000" vehsPerHour="23" from="-45494495" to="28706217"/>
+    <flow id="wu_os_to_ns" type="car" begin="0" end="2000" vehsPerHour="9" from="-45494495" to="23142338#2"/>
+    <flow id="wu_os_to_ba" type="car" begin="0" end="2000" vehsPerHour="30" from="-45494495" to="230845886"/>
+    <flow id="wu_os_to_br" type="car" begin="0" end="2000" vehsPerHour="16" from="-45494495" to="23156390"/>
+    <flow id="wu_os_to_kl" type="car" begin="0" end="2000" vehsPerHour="16" from="-45494495" to="28716808#1"/>
+    <flow id="wu_os_to_gg" type="car" begin="0" end="2000" vehsPerHour="23" from="-45494495" to="23156305"/>
+    <flow id="wu_os_to_as" type="car" begin="0" end="2000" vehsPerHour="30" from="-45494495" to="41899283#1"/>
+    <flow id="wu_os_to_gj" type="car" begin="0" end="2000" vehsPerHour="16" from="-45494495" to="23527526"/>
+    <flow id="wu_os_to_ko" type="car" begin="0" end="2000" vehsPerHour="36" from="-45494495" to="972103805"/>
+
+    <flow id="wu_od_to_os" type="car" begin="0" end="2000" vehsPerHour="72" from="803785575#0" to="45494495"/>
+    <flow id="wu_od_to_sl" type="car" begin="0" end="2000" vehsPerHour="4" from="803785575#0" to="28706217"/>
+    <flow id="wu_od_to_ns" type="car" begin="0" end="2000" vehsPerHour="19" from="803785575#0" to="23142338#2"/>
+    <flow id="wu_od_to_ba" type="car" begin="0" end="2000" vehsPerHour="60" from="803785575#0" to="230845886"/>
+    <flow id="wu_od_to_br" type="car" begin="0" end="2000" vehsPerHour="46" from="803785575#0" to="23156390"/>
+    <flow id="wu_od_to_kl" type="car" begin="0" end="2000" vehsPerHour="46" from="803785575#0" to="28716808#1"/>
+    <flow id="wu_od_to_gg" type="car" begin="0" end="2000" vehsPerHour="60" from="803785575#0" to="23156305"/>
+    <flow id="wu_od_to_as" type="car" begin="0" end="2000" vehsPerHour="60" from="803785575#0" to="41899283#1"/>
+    <flow id="wu_od_to_gj" type="car" begin="0" end="2000" vehsPerHour="19" from="803785575#0" to="23527526"/>
+    <flow id="wu_od_to_ko" type="car" begin="0" end="2000" vehsPerHour="138" from="803785575#0" to="972103805"/>
+
+    <flow id="wu_ns_to_os" type="car" begin="0" end="2000" vehsPerHour="7" from="-23142338#2" to="45494495"/>
+    <flow id="wu_ns_to_od" type="car" begin="0" end="2000" vehsPerHour="7" from="-23142338#2" to="23156030#6"/>
+    <flow id="wu_ns_to_sl" type="car" begin="0" end="2000" vehsPerHour="7" from="-23142338#2" to="28706217"/>
+    <flow id="wu_ns_to_ba" type="car" begin="0" end="2000" vehsPerHour="11" from="-23142338#2" to="230845886"/>
+    <flow id="wu_ns_to_br" type="car" begin="0" end="2000" vehsPerHour="7" from="-23142338#2" to="23156390"/>
+    <flow id="wu_ns_to_kl" type="car" begin="0" end="2000" vehsPerHour="7" from="-23142338#2" to="28716808#1"/>
+    <flow id="wu_ns_to_gg" type="car" begin="0" end="2000" vehsPerHour="16" from="-23142338#2" to="23156305"/>
+    <flow id="wu_ns_to_as" type="car" begin="0" end="2000" vehsPerHour="21" from="-23142338#2" to="41899283#1"/>
+    <flow id="wu_ns_to_gj" type="car" begin="0" end="2000" vehsPerHour="11" from="-23142338#2" to="23527526"/>
+    <flow id="wu_ns_to_ko" type="car" begin="0" end="2000" vehsPerHour="86" from="-23142338#2" to="972103805"/>
+
+    <flow id="wu_ba_to_os" type="car" begin="0" end="2000" vehsPerHour="62" from="-230845886" to="45494495"/>
+    <flow id="wu_ba_to_od" type="car" begin="0" end="2000" vehsPerHour="50" from="-230845886" to="23156030#6"/>
+    <flow id="wu_ba_to_sl" type="car" begin="0" end="2000" vehsPerHour="46" from="-230845886" to="28706217"/>
+    <flow id="wu_ba_to_ns" type="car" begin="0" end="2000" vehsPerHour="32" from="-230845886" to="23142338#2"/>
+    <flow id="wu_ba_to_br" type="car" begin="0" end="2000" vehsPerHour="4" from="-230845886" to="23156390"/>
+    <flow id="wu_ba_to_kl" type="car" begin="0" end="2000" vehsPerHour="4" from="-230845886" to="28716808#1"/>
+    <flow id="wu_ba_to_gg" type="car" begin="0" end="2000" vehsPerHour="32" from="-230845886" to="23156305"/>
+    <flow id="wu_ba_to_as" type="car" begin="0" end="2000" vehsPerHour="72" from="-230845886" to="41899283#1"/>
+    <flow id="wu_ba_to_gj" type="car" begin="0" end="2000" vehsPerHour="72" from="-230845886" to="23527526"/>
+    <flow id="wu_ba_to_ko" type="car" begin="0" end="2000" vehsPerHour="124" from="-230845886" to="972103805"/>
+
+    <flow id="wu_as_to_os" type="car" begin="0" end="2000" vehsPerHour="62" from="23687583" to="45494495"/>
+    <flow id="wu_as_to_od" type="car" begin="0" end="2000" vehsPerHour="42" from="23687583" to="23156030#6"/>
+    <flow id="wu_as_to_sl" type="car" begin="0" end="2000" vehsPerHour="72" from="23687583" to="28706217"/>
+    <flow id="wu_as_to_ns" type="car" begin="0" end="2000" vehsPerHour="60" from="23687583" to="23142338#2"/>
+    <flow id="wu_as_to_ba" type="car" begin="0" end="2000" vehsPerHour="46" from="23687583" to="230845886"/>
+    <flow id="wu_as_to_br" type="car" begin="0" end="2000" vehsPerHour="19" from="23687583" to="23156390"/>
+    <flow id="wu_as_to_kl" type="car" begin="0" end="2000" vehsPerHour="19" from="23687583" to="28716808#1"/>
+    <flow id="wu_as_to_gg" type="car" begin="0" end="2000" vehsPerHour="19" from="23687583" to="23156305"/>
+    <flow id="wu_as_to_gj" type="car" begin="0" end="2000" vehsPerHour="72" from="23687583" to="23527526"/>
+    <flow id="wu_as_to_ko" type="car" begin="0" end="2000" vehsPerHour="100" from="23687583" to="972103805"/>
+
+
+    <flow id="in_os_to_od" type="car" begin="2000" end="5000" vehsPerHour="32" from="-45494495" to="23156030#6"/>
+    <flow id="in_os_to_sl" type="car" begin="2000" end="5000" vehsPerHour="34" from="-45494495" to="28706217"/>
+    <flow id="in_os_to_ns" type="car" begin="2000" end="5000" vehsPerHour="14" from="-45494495" to="23142338#2"/>
+    <flow id="in_os_to_ba" type="car" begin="2000" end="5000" vehsPerHour="43" from="-45494495" to="230845886"/>
+    <flow id="in_os_to_br" type="car" begin="2000" end="5000" vehsPerHour="23" from="-45494495" to="23156390"/>
+    <flow id="in_os_to_kl" type="car" begin="2000" end="5000" vehsPerHour="23" from="-45494495" to="28716808#1"/>
+    <flow id="in_os_to_gg" type="car" begin="2000" end="5000" vehsPerHour="34" from="-45494495" to="23156305"/>
+    <flow id="in_os_to_as" type="car" begin="2000" end="5000" vehsPerHour="43" from="-45494495" to="41899283#1"/>
+    <flow id="in_os_to_gj" type="car" begin="2000" end="5000" vehsPerHour="23" from="-45494495" to="23527526"/>
+    <flow id="in_os_to_ko" type="car" begin="2000" end="5000" vehsPerHour="53" from="-45494495" to="972103805"/>
+
+    <flow id="in_od_to_os" type="car" begin="2000" end="5000" vehsPerHour="178" from="803785575#0" to="45494495"/>
+    <flow id="in_od_to_sl" type="car" begin="2000" end="5000" vehsPerHour="11" from="803785575#0" to="28706217"/>
+    <flow id="in_od_to_ns" type="car" begin="2000" end="5000" vehsPerHour="45" from="803785575#0" to="23142338#2"/>
+    <flow id="in_od_to_ba" type="car" begin="2000" end="5000" vehsPerHour="144" from="803785575#0" to="230845886"/>
+    <flow id="in_od_to_br" type="car" begin="2000" end="5000" vehsPerHour="111" from="803785575#0" to="23156390"/>
+    <flow id="in_od_to_kl" type="car" begin="2000" end="5000" vehsPerHour="111" from="803785575#0" to="28716808#1"/>
+    <flow id="in_od_to_gg" type="car" begin="2000" end="5000" vehsPerHour="144" from="803785575#0" to="23156305"/>
+    <flow id="in_od_to_as" type="car" begin="2000" end="5000" vehsPerHour="144" from="803785575#0" to="41899283#1"/>
+    <flow id="in_od_to_gj" type="car" begin="2000" end="5000" vehsPerHour="45" from="803785575#0" to="23527526"/>
+    <flow id="in_od_to_ko" type="car" begin="2000" end="5000" vehsPerHour="206" from="803785575#0" to="972103805"/>
+
+    <flow id="in_ns_to_os" type="car" begin="2000" end="5000" vehsPerHour="16" from="-23142338#2" to="45494495"/>
+    <flow id="in_ns_to_od" type="car" begin="2000" end="5000" vehsPerHour="10" from="-23142338#2" to="23156030#6"/>
+    <flow id="in_ns_to_sl" type="car" begin="2000" end="5000" vehsPerHour="16" from="-23142338#2" to="28706217"/>
+    <flow id="in_ns_to_ba" type="car" begin="2000" end="5000" vehsPerHour="27" from="-23142338#2" to="230845886"/>
+    <flow id="in_ns_to_br" type="car" begin="2000" end="5000" vehsPerHour="16" from="-23142338#2" to="23156390"/>
+    <flow id="in_ns_to_kl" type="car" begin="2000" end="5000" vehsPerHour="16" from="-23142338#2" to="28716808#1"/>
+    <flow id="in_ns_to_gg" type="car" begin="2000" end="5000" vehsPerHour="39" from="-23142338#2" to="23156305"/>
+    <flow id="in_ns_to_as" type="car" begin="2000" end="5000" vehsPerHour="50" from="-23142338#2" to="41899283#1"/>
+    <flow id="in_ns_to_gj" type="car" begin="2000" end="5000" vehsPerHour="27" from="-23142338#2" to="23527526"/>
+    <flow id="in_ns_to_ko" type="car" begin="2000" end="5000" vehsPerHour="317" from="-23142338#2" to="972103805"/>
+
+    <flow id="in_ba_to_os" type="car" begin="2000" end="5000" vehsPerHour="104" from="-230845886" to="45494495"/>
+    <flow id="in_ba_to_od" type="car" begin="2000" end="5000" vehsPerHour="13" from="-230845886" to="23156030#6"/>
+    <flow id="in_ba_to_sl" type="car" begin="2000" end="5000" vehsPerHour="78" from="-230845886" to="28706217"/>
+    <flow id="in_ba_to_ns" type="car" begin="2000" end="5000" vehsPerHour="55" from="-230845886" to="23142338#2"/>
+    <flow id="in_ba_to_br" type="car" begin="2000" end="5000" vehsPerHour="8" from="-230845886" to="23156390"/>
+    <flow id="in_ba_to_kl" type="car" begin="2000" end="5000" vehsPerHour="8" from="-230845886" to="28716808#1"/>
+    <flow id="in_ba_to_gg" type="car" begin="2000" end="5000" vehsPerHour="55" from="-230845886" to="23156305"/>
+    <flow id="in_ba_to_as" type="car" begin="2000" end="5000" vehsPerHour="125" from="-230845886" to="41899283#1"/>
+    <flow id="in_ba_to_gj" type="car" begin="2000" end="5000" vehsPerHour="125" from="-230845886" to="23527526"/>
+    <flow id="in_ba_to_ko" type="car" begin="2000" end="5000" vehsPerHour="218" from="-230845886" to="972103805"/>
+
+    <flow id="in_as_to_os" type="car" begin="2000" end="5000" vehsPerHour="104" from="23687583" to="45494495"/>
+    <flow id="in_as_to_od" type="car" begin="2000" end="5000" vehsPerHour="30" from="23687583" to="23156030#6"/>
+    <flow id="in_as_to_sl" type="car" begin="2000" end="5000" vehsPerHour="125" from="23687583" to="28706217"/>
+    <flow id="in_as_to_ns" type="car" begin="2000" end="5000" vehsPerHour="101" from="23687583" to="23142338#2"/>
+    <flow id="in_as_to_ba" type="car" begin="2000" end="5000" vehsPerHour="78" from="23687583" to="230845886"/>
+    <flow id="in_as_to_br" type="car" begin="2000" end="5000" vehsPerHour="32" from="23687583" to="23156390"/>
+    <flow id="in_as_to_kl" type="car" begin="2000" end="5000" vehsPerHour="32" from="23687583" to="28716808#1"/>
+    <flow id="in_as_to_gg" type="car" begin="2000" end="5000" vehsPerHour="32" from="23687583" to="23156305"/>
+    <flow id="in_as_to_gj" type="car" begin="2000" end="5000" vehsPerHour="125" from="23687583" to="23527526"/>
+    <flow id="in_as_to_ko" type="car" begin="2000" end="5000" vehsPerHour="172" from="23687583" to="972103805"/>
+
+
+    <flow id="out_os_to_od" type="car" begin="5000" end="8400" vehsPerHour="107" from="-45494495" to="23156030#6"/>
+    <flow id="out_os_to_sl" type="car" begin="5000" end="8400" vehsPerHour="16" from="-45494495" to="28706217"/>
+    <flow id="out_os_to_ns" type="car" begin="5000" end="8400" vehsPerHour="16" from="-45494495" to="23142338#2"/>
+    <flow id="out_os_to_ba" type="car" begin="5000" end="8400" vehsPerHour="104" from="-45494495" to="230845886"/>
+    <flow id="out_os_to_as" type="car" begin="5000" end="8400" vehsPerHour="104" from="-45494495" to="41899283#1"/>
+
+    <flow id="out_od_to_os" type="car" begin="5000" end="8400" vehsPerHour="53" from="803785575#0" to="45494495"/>
+    <flow id="out_od_to_sl" type="car" begin="5000" end="8400" vehsPerHour="16" from="803785575#0" to="28706217"/>
+    <flow id="out_od_to_ns" type="car" begin="5000" end="8400" vehsPerHour="16" from="803785575#0" to="23142338#2"/>
+    <flow id="out_od_to_ba" type="car" begin="5000" end="8400" vehsPerHour="22" from="803785575#0" to="230845886"/>
+    <flow id="out_od_to_as" type="car" begin="5000" end="8400" vehsPerHour="50" from="803785575#0" to="41899283#1"/>
+
+    <flow id="out_ns_to_os" type="car" begin="5000" end="8400" vehsPerHour="14" from="-23142338#2" to="45494495"/>
+    <flow id="out_ns_to_od" type="car" begin="5000" end="8400" vehsPerHour="27" from="-23142338#2" to="23156030#6"/>
+    <flow id="out_ns_to_sl" type="car" begin="5000" end="8400" vehsPerHour="16" from="-23142338#2" to="28706217"/>
+    <flow id="out_ns_to_ba" type="car" begin="5000" end="8400" vehsPerHour="55" from="-23142338#2" to="230845886"/>
+    <flow id="out_ns_to_as" type="car" begin="5000" end="8400" vehsPerHour="101" from="-23142338#2" to="41899283#1"/>
+
+    <flow id="out_ba_to_os" type="car" begin="5000" end="8400" vehsPerHour="43" from="-230845886" to="45494495"/>
+    <flow id="out_ba_to_od" type="car" begin="5000" end="8400" vehsPerHour="86" from="-230845886" to="23156030#6"/>
+    <flow id="out_ba_to_sl" type="car" begin="5000" end="8400" vehsPerHour="27" from="-230845886" to="28706217"/>
+    <flow id="out_ba_to_ns" type="car" begin="5000" end="8400" vehsPerHour="11" from="-230845886" to="23142338#2"/>
+    <flow id="out_ba_to_as" type="car" begin="5000" end="8400" vehsPerHour="78" from="-230845886" to="41899283#1"/>
+
+    <flow id="out_as_to_os" type="car" begin="5000" end="8400" vehsPerHour="43" from="23687583" to="45494495"/>
+    <flow id="out_as_to_od" type="car" begin="5000" end="8400" vehsPerHour="86" from="23687583" to="23156030#6"/>
+    <flow id="out_as_to_sl" type="car" begin="5000" end="8400" vehsPerHour="50" from="23687583" to="28706217"/>
+    <flow id="out_as_to_ns" type="car" begin="5000" end="8400" vehsPerHour="125" from="23687583" to="23142338#2"/>
+    <flow id="out_as_to_ba" type="car" begin="5000" end="8400" vehsPerHour="125" from="23687583" to="230845886"/>
+
+    <flow id="out_br_to_os" type="car" begin="5000" end="8400" vehsPerHour="23" from="-23156390" to="45494495"/>
+    <flow id="out_br_to_od" type="car" begin="5000" end="8400" vehsPerHour="67" from="-23156390" to="23156030#6"/>
+    <flow id="out_br_to_sl" type="car" begin="5000" end="8400" vehsPerHour="16" from="-23156390" to="28706217"/>
+    <flow id="out_br_to_ns" type="car" begin="5000" end="8400" vehsPerHour="11" from="-23156390" to="23142338#2"/>
+    <flow id="out_br_to_ba" type="car" begin="5000" end="8400" vehsPerHour="8" from="-23156390" to="230845886"/>
+    <flow id="out_br_to_as" type="car" begin="5000" end="8400" vehsPerHour="32" from="-23156390" to="41899283#1"/>
+    <flow id="out_br_to_ko" type="car" begin="5000" end="8400" vehsPerHour="45" from="-23156390" to="972103805"/>
+
+    <flow id="out_kl_to_os" type="car" begin="5000" end="8400" vehsPerHour="23" from="-28716808#1" to="45494495"/>
+    <flow id="out_kl_to_od" type="car" begin="5000" end="8400" vehsPerHour="67" from="-28716808#1" to="23156030#6"/>
+    <flow id="out_kl_to_sl" type="car" begin="5000" end="8400" vehsPerHour="16" from="-28716808#1" to="28706217"/>
+    <flow id="out_kl_to_ns" type="car" begin="5000" end="8400" vehsPerHour="11" from="-28716808#1" to="23142338#2"/>
+    <flow id="out_kl_to_ba" type="car" begin="5000" end="8400" vehsPerHour="8" from="-28716808#1" to="230845886"/>
+    <flow id="out_kl_to_as" type="car" begin="5000" end="8400" vehsPerHour="32" from="-28716808#1" to="41899283#1"/>
+    <flow id="out_kl_to_ko" type="car" begin="5000" end="8400" vehsPerHour="45" from="-28716808#1" to="972103805"/>
+
+    <flow id="out_gg_to_os" type="car" begin="5000" end="8400" vehsPerHour="34" from="-23156305" to="45494495"/>
+    <flow id="out_gg_to_od" type="car" begin="5000" end="8400" vehsPerHour="86" from="-23156305" to="23156030#6"/>
+    <flow id="out_gg_to_sl" type="car" begin="5000" end="8400" vehsPerHour="39" from="-23156305" to="28706217"/>
+    <flow id="out_gg_to_ns" type="car" begin="5000" end="8400" vehsPerHour="78" from="-23156305" to="23142338#2"/>
+    <flow id="out_gg_to_ba" type="car" begin="5000" end="8400" vehsPerHour="55" from="-23156305" to="230845886"/>
+    <flow id="out_gg_to_as" type="car" begin="5000" end="8400" vehsPerHour="32" from="-23156305" to="41899283#1"/>
+    <flow id="out_gg_to_ko" type="car" begin="5000" end="8400" vehsPerHour="45" from="-23156305" to="972103805"/>
+
+    <flow id="out_gj_to_os" type="car" begin="5000" end="8400" vehsPerHour="23" from="-23527526" to="45494495"/>
+    <flow id="out_gj_to_od" type="car" begin="5000" end="8400" vehsPerHour="27" from="-23527526" to="23156030#6"/>
+    <flow id="out_gj_to_sl" type="car" begin="5000" end="8400" vehsPerHour="27" from="-23527526" to="28706217"/>
+    <flow id="out_gj_to_ns" type="car" begin="5000" end="8400" vehsPerHour="231" from="-23527526" to="23142338#2"/> <flow id="out_gj_to_ba" type="car" begin="5000" end="8400" vehsPerHour="125" from="-23527526" to="230845886"/>
+    <flow id="out_gj_to_as" type="car" begin="5000" end="8400" vehsPerHour="125" from="-23527526" to="41899283#1"/>
+    <flow id="out_gj_to_ko" type="car" begin="5000" end="8400" vehsPerHour="45" from="-23527526" to="972103805"/> <flow id="out_ko_to_os" type="car" begin="5000" end="8400" vehsPerHour="53" from="307625221" to="45494495"/>
+    <flow id="out_ko_to_od" type="car" begin="5000" end="8400" vehsPerHour="206" from="307625221" to="23156030#6"/>
+    <flow id="out_ko_to_sl" type="car" begin="5000" end="8400" vehsPerHour="317" from="307625221" to="28706217"/>
+    <flow id="out_ko_to_ns" type="car" begin="5000" end="8400" vehsPerHour="218" from="307625221" to="23142338#2"/>
+    <flow id="out_ko_to_ba" type="car" begin="5000" end="8400" vehsPerHour="172" from="307625221" to="230845886"/>
+    <flow id="out_ko_to_as" type="car" begin="5000" end="8400" vehsPerHour="172" from="307625221" to="41899283#1"/>
+</routes>
