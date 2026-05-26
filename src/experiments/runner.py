@@ -8,7 +8,7 @@ def train_model(
     *,
     checkpoint_path: str,
     curriculum_stages: list[float] = [0.75, 0.875, 1.0], 
-    episodes_per_curriculum: int = 30,
+    episodes_per_curriculum: int = 100,
     model_kwargs: dict[str, Any]
 ) -> None:
     model = None
