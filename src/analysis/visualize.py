@@ -59,7 +59,7 @@ def generate_comparison_dashboard(file_dict: dict) -> None:
     ax2.set_title("Time Loss Distribution", weight="bold")
     ax2.set_xlabel("Time Loss (Seconds)")
     ax2.set_ylabel("Density")
-    ax2.set_xlim(0, None)
+    ax2.set_xlim(0, 1000)
     ax2.legend()
 
     # waiting time vs number of stops
