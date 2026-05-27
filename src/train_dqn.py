@@ -6,7 +6,7 @@ train_model(
     checkpoint_path="dqn_agent",
     model_kwargs={
         "learning_rate": 1e-3,
-        "buffer_size": 100000,
+        "buffer_size": 500000,
         "batch_size": 128,
         "exploration_fraction": 0.1,
         "exploration_initial_eps": 1.0,

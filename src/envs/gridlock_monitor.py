@@ -24,6 +24,7 @@ class GridlockMonitor(MultiAgentEnv):
             
             if total_halting >= self.max_halting_vehicles:
                 dones = np.ones(self.num_envs, dtype=bool)
+                rews = np.full(self.num_envs, -100000.0, dtype=np.float32)
                 
                 if super().allow_reset:
                     obs = self.reset()

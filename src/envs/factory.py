@@ -9,7 +9,7 @@ RECORDINGS_DIR = Path("simulations/recordings")
 DEFAULT_DELTA_TIME = 5
 DEFAULT_NUM_SECONDS = 3600 + 4800
 
-def make_env(scale: float = 1, max_halting_vehicles: int = 800, use_gui: bool = False, recording_name: str = None):
+def make_env(scale: float = 1, max_halting_vehicles: int = 800, use_gui: bool = True, recording_name: str = None):
     # Ensure recording directory exists
     RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
     

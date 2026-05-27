@@ -8,7 +8,7 @@ def train_model(
     *,
     checkpoint_path: str,
     curriculum_stages: list[float] = [0.75, 0.875, 1.0], 
-    episodes_per_curriculum: int = 100,
+    episodes_per_curriculum: int = 25,
     model_kwargs: dict[str, Any]
 ) -> None:
     model = None
@@ -32,7 +32,7 @@ def train_model(
             else:
                 model.set_env(env)
             
-            model.learn(total_timesteps=total_training_steps, progress_bar=True)
+            model.learn(total_timesteps=total_training_steps, progress_bar=True, reset_num_timesteps=False)
             stage_checkpoint = f"{checkpoint_path}_stage_{int(scale*100)}"
             model.save(stage_checkpoint)
 
