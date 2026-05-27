@@ -5,3 +5,5 @@ rich
 seaborn
 matplotlib
 pandas
+numpy
+pettingzoo==1.23.0

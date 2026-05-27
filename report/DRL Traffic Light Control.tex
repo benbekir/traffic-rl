@@ -23,9 +23,9 @@
 Jönköping, Sweden}
 \and
 \IEEEauthorblockN{Ahmet Alper Basturk}
-\IEEEauthorblockA{Jönköping University\\
-Jönköping, Sweden \\
-baah23ej@student.ju.se}}
+\IEEEauthorblockA{\textit{School of Engineering}\\
+\textit{Jönköping University} \\
+Jönköping, Sweden}}
 }
 
 \maketitle
@@ -119,6 +119,49 @@ im not sure about this yet
 - predefined reward functions: \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L347}
 
 \section{Experiments}
+\begin{table}[h]
+\centering
+\caption{Overview of the traffic signal control system.}
+\label{tab:project_overview}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Description} \\
+\hline
+Method    & Deep Q-Network (DQN) and Proximal Policy Optimization (PPO) \\
+\hline
+Technique & Curriculum Learning with three traffic density stages \\
+\hline
+          & (0.75, 0.875, and 1.0 scale factors) \\
+Scenario  & Real-world road network of Jönköping, Sweden \\
+\hline
+Platform  & Simulation of Urban Mobility (SUMO) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Overview of the traffic signal control system.}
+\label{tab:system-overview}
+\begin{tabular}{|c|p{7cm}|}\hline
+\textbf{Parameter} & \textbf{Description} \\
+\hline
+Method & Deep Q-Learning (DQN) and Proximal Policy Optimization (PPO) \\
+\hline
+Technique & Curriculum Learning with parameters and three traffic density stages (0.75, 0.875, and 1.0 scale factors)\\
+\hline
+Scenario & Jönköping city center road network (multi-intersection) \\
+\hline
+Platform & SUMO (Simulation of Urban Mobility) \\
+\hline
+Agent Type & Multi-Agent with shared policy (parameter sharing) \\
+\hline
+Reward Function & Queue-based penalty \\
+\hline
+\end{tabular}
+\end{table}
+
+Ben choose one of the graph.
 
 \section{Results}
 
