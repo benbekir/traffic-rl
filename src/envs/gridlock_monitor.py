@@ -22,14 +22,10 @@ class GridlockMonitor(MultiAgentEnv):
                 for edge_id in sumo_instance.edge.getIDList()
             )
             
-            if total_halting >= self.max_halting_vehicles:
+            if super().allow_reset and total_halting >= self.max_halting_vehicles:
                 dones = np.ones(self.num_envs, dtype=bool)
                 rews = np.full(self.num_envs, -100000.0, dtype=np.float32)
-                
-                if super().allow_reset:
-                    obs = self.reset()
-                else:
-                    obs = np.zeros((self.num_envs, self.max_obs_size), dtype=np.float32)
+                obs = self.reset()
                     
         except Exception as e:
             pass
