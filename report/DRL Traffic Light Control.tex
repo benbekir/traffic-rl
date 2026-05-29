@@ -26,6 +26,7 @@ Jönköping, Sweden}
 \IEEEauthorblockA{\textit{School of Engineering}\\
 \textit{Jönköping University} \\
 Jönköping, Sweden}}
+}
 
 \maketitle
 
@@ -160,9 +161,57 @@ Reward Function & Queue-based penalty \\
 \end{tabular}
 \end{table}
 
-Ben choose one of the graph.
+Ben, choose one of the graphs.
 
 \section{Results}
+
+\begin{table}[h]
+\centering
+\caption{Performance comparison across 10 runs (averaged).}
+\label{tab:summary}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{Baseline} & \textbf{DQN} & \textbf{PPO} \\
+\hline
+Completed trips        & 5{,}837   & 5{,}192          & 5{,}443  \\
+\hline
+Avg. waiting time      & 97.4s     & \textbf{12.5s}   & 35.1s    \\
+\hline
+Avg. time loss         & 199.4s    & \textbf{45.2s}   & 89.3s    \\
+\hline
+Avg. stops per vehicle & 6.48      & \textbf{1.11}    & 2.97     \\
+\hline
+Avg. speed             & 6.73 m/s  & \textbf{8.81 m/s}& 8.10 m/s \\
+\hline
+Total waiting time     & 568{,}322s& \textbf{64{,}689s}& 201{,}287s \\
+\hline
+Simulation end time    & 8{,}398s  & 8{,}398s         & 8{,}157s \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\caption{Improvement over baseline (10-run average).}
+\label{tab:improvement}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{DQN} & \textbf{PPO} \\
+\hline
+Waiting time      & \textbf{-87.2\%} & -64.0\% \\
+\hline
+Time loss         & \textbf{-77.3\%} & -55.2\% \\
+\hline
+Stops per vehicle & \textbf{-82.8\%} & -54.2\% \\
+\hline
+Average speed     & \textbf{+30.9\%} & +20.5\% \\
+\hline
+Completed trips   & -11.0\%          & -6.8\%  \\
+\hline
+\end{tabular}
+\end{table}
+
 
 \section{Conclusion}
 
