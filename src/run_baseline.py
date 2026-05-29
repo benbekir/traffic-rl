@@ -1,11 +1,10 @@
 import numpy as np
 from envs.factory import DEFAULT_DELTA_TIME, make_env
 
-def run_fixed_time_baseline(*, phase_duration_seconds: int) -> None:
+def run_fixed_time_baseline(*, phase_duration_seconds: int, recording_name: str) -> None:
     """
     Runs a full simulation episode using a simple fixed-time policy where traffic phases cycle at a set interval.
     """
-    recording_name = f"jkpg_baseline_{phase_duration_seconds}s.xml"
     env = make_env(recording_name=recording_name)
     env.allow_reset = False
 
@@ -32,4 +31,7 @@ def run_fixed_time_baseline(*, phase_duration_seconds: int) -> None:
         env.close()
 
 if __name__ == "__main__":
-    run_fixed_time_baseline(phase_duration_seconds=10)
+    ACTION_DELTA = 10
+    ITERATIONS = 10
+    for i in range(ITERATIONS):
+        run_fixed_time_baseline(phase_duration_seconds=ACTION_DELTA, recording_name=f"jkpg_baseline_{ACTION_DELTA}s_{i+1}.xml")

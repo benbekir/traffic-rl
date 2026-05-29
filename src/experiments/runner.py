@@ -47,7 +47,7 @@ def run_loaded_model(
     model_cls: type[BaseAlgorithm],
     *,
     checkpoint_path: str,
-    recording_name: str,
+    recording_name: str
 ) -> None:
     env = make_env(scale=1.0, recording_name=recording_name)
     env.allow_reset = False
@@ -66,3 +66,14 @@ def run_loaded_model(
         print(f"An error occurred during evaluation execution: {exc}")
     finally:
         env.close()
+
+def test_model(
+    model_cls: type[BaseAlgorithm],
+    iterations: int = 10,
+    *,
+    checkpoint_path: str,
+    recording_name: str
+) -> None:
+    for i in range(iterations):
+        run_loaded_model(model_cls, checkpoint_path=checkpoint_path, recording_name=f"{recording_name}{i+1}")
+    
