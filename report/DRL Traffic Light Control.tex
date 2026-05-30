@@ -57,20 +57,20 @@ Stable Baselines3 offers deep reinforcement learning algorithm implementations b
 TODO: name 2-3 related works and quickly mention topic, method, and findings
 
 \section{Environment}
-a good starting tutorial on how to generate traffic scenarios can be found here \cite{sumotutorial}.
-\subsection{Network}
-map of sweden downloaded here: https://download.geofabrik.de/europe/sweden.html
-geojson polygon object created here: https://geojson.io/
-chosen geojson found here\footnote{\url{https://github.com/benbekir/traffic-rl/blob/main/simulations/networks/jkpg/artifacts/jkpg.geojson}}.
+
+\subsection{Network Generation}
+The urban road network was modeled following standard traffic scenario generation workflows \cite{sumotutorial}. First, the raw geographical data for Sweden was obtained from Geofabrik\footnote{\url{https://download.geofabrik.de/europe/sweden.html}}, and a custom bounding polygon was created using the GeoJSON\footnote{\url{https://geojson.io/}} web interface to isolate the target study area\footnote{\url{https://github.com/benbekir/traffic-rl/blob/main/simulations/networks/jkpg/artifacts/jkpg.geojson}} shown in figure~\ref{fig:geojson-filter}.
 
 \begin{figure}[h]
-\label{fig:geojson-filter}
 \centering
 \includegraphics[width=\columnwidth]{resources/geojson_filter.png}
-\caption{The filter (in grey) that defines the boundaries of the road network in Jönköping.}
+\caption{The GeoJSON boundary polygon (shaded in grey) defining the geographic scope of the Jönköping road network.}
+\label{fig:geojson-filter}
 \end{figure}
 
-then, we used osmium and osmfilter to apply the polygon shape to the map of sweden. afterwards, we filter only for highways, except for those of the following types:
+These boundaries were selected specifically because they contain the main roads in the Jönköping city center, including a total of five roundabouts. A challenging bottleneck within this area occurs along Östra Strandgatan (visible in the lower-right section of the filter), where two major roundabouts operate close together and feed directly into intersections controlled by traffic signals.
+
+To construct the network, the command-line tools \textit{osmium} and \textit{osmfilter} were used to clip the Swedish map data down to the defined GeoJSON polygon. Next, irrelevant infrastructure was filtered out using OpenStreetMap highway attributes, including:
 
 \begin{itemize}
     \item footway
@@ -81,36 +81,60 @@ then, we used osmium and osmfilter to apply the polygon shape to the map of swed
     \item bridleway
 \end{itemize}
 
-finally, we use the SUMO \textit{netconvert} tool to convert the map into a SUMO network.
-
-as for limitations, we extract lanes including speed limit, intersections, and traffic lights. however, since we only model car traffic and not pedestrians, all pedestrian traffic lights will behave completely deterministic. this does not represent the real world where pedestrians can press a button on the traffic light to trigger a faster phase switching.
+Finally, the compiled map data was processed using the SUMO \textit{netconvert} utility to generate the executable simulation network. The SUMO network is visualized in figure~\ref{fig:net}.
 
 \begin{figure}[h]
-\label{fig:net}
 \centering
 \includegraphics[width=\columnwidth]{resources/net.png}
-\caption{The network as shown in the SUMO nededit UI, highlighting the traffic light placements.}
+\caption{The finalized road network displayed within the SUMO Netedit interface, highlighting the target traffic light placements.}
+\label{fig:net}
 \end{figure}
 
-\subsubsection{Demand Modeling}
-since there is no publicly available data regarding traffic assignment zones and demand in jönköping, we use the SUMO tool randomTrips \footnote{\url{https://sumo.dlr.de/docs/Tools/Trip.html#randomtripspy}} to randomly create trips. we create 3600 individual trips in total where a new trip is spawned into the simulation on every timestep.
+\subsection{Simulation Scope and Limitations}
+The generated environment captures real-world lane geometries, intersection configurations, speed limits, and traffic light locations. However, certain simplifications were enforced to bound the complexity of the experiment. First, the simulation models passenger vehicle traffic exclusively and disregards pedestrians. Consequently, pedestrian-actuated crossing signals operate on semi-realistic default patterns rather than dynamic activation. Second, urban bus transport, which contributes heavily to public transit volume in central Jönköping, was excluded from the routing profile. We acknowledge that these abstractions deviate from real-world conditions, and the simulation should be interpreted as a comparative baseline for algorithmic performance rather than an exact replica of local traffic behavior.
 
-\subsubsection{Rush Hours and Noise}
-im not sure about this yet
+\subsection{Traffic Demand Modeling}
+Due to the absence of publicly available traffic assignment zones or quantitative origin-destination flow data for Jönköping, a deterministic, observation-driven demand model was engineered. Relying on entirely randomized vehicle insertion across the network is unrepresentative of real traffic behavior, as it distributes vehicle density uniformly across minor residential streets and major roads alike. 
 
-\subsection{Observations}
+Therefore, to ensure a realistic flow, an origin-destination matrix was manually constructed based on our own observations. This matrix maps commuter behaviors by defining vehicle volumes, timestamps, and network entry and exit edges. To maintain realistic routing, traffic flows are restricted exclusively to boundary edges of the network. The SUMO \textit{duarouter} utility is then used to build the demand file and randomize vehicle routes by computing the shortest-path between the specified points and adding minor variations.
 
-- lane density: density is calculated on the entire lane, by considering how many cars are present in the lane and how many cars could potentially fit in the lane. \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L297}
+To simulate high-pressure gridlock conditions, the 8,400-second simulation timeline incorporates two distinct peak rush-hours:
+\begin{itemize}
+    \item \textbf{Baseline Phase (Seconds 0--2000):} Operates under standard, off-peak baseline volumes.
+    \item \textbf{Morning Peak (Seconds 2000--5000):} Simulates morning commuting patterns, where the majority of vehicles travel from east to west.
+    \item \textbf{Evening Peak (Seconds 5000--8400):} Simulates evening commuting patterns, where the majority of vehicles travel from west to east.
+\end{itemize}
 
-- queue information: queue is calculated by counting the number of cars that are stopped at the traffic light, waiting for the green signal. \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L309}
+\subsection{Markov Decision Process Formulation}
+To facilitate reinforcement learning, the traffic signal control problem is formalized as a Markov Decision Process (MDP) consisting of a state observation space, a discrete action space, and a scalar reward function mapped to each agent.
 
-\subsection{Actions}
+\subsubsection{Observation Space}
+The observation vector for each traffic signal agent provides intersection's operational state. The state is represented as a multi-dimensional vector structured as follows \cite{observation}:
 
-\subsection{Reward}
+\begin{equation}
+    O = [P_{\text{one-hot}}, M_{\text{green}}, D_{1}, \dots, D_{n}, Q_{1}, \dots, Q_{n}]
+\end{equation}
 
-- predefined reward functions: \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L347}
+Where:
+\begin{itemize}
+    \item \textbf{$P_{\text{one-hot}}$:} A one-hot encoded vector representing the currently active green phase configuration.
+    \item \textbf{$M_{\text{green}}$:} An indicator specifying whether the minimum green phase duration has elapsed.
+    \item \textbf{$D_{\text{i}}$:} The normalized vehicle density of incoming lane $i$, calculated by dividing the current number of present vehicles by the maximum physical vehicle capacity of that lane.
+    \item \textbf{$Q_i$:} The normalized queue length of incoming lane $i$, defined as the number of halted vehicles (traveling at a velocity below $0.1 \text{ m/s}$) divided by the total lane capacity.
+\end{itemize}
+
+\subsubsection{Action Space}
+The action space is modeled as a discrete set where each action corresponds to a specific green phase configuration at the intersection \cite{actions}. Every 5 seconds, the agent evaluates the state observation and selects the next phase configuration. To maintain traffic safety and mimic physical infrastructure constraints, any action that triggers a change in the active phase configuration is automatically prepended by a yellow phase lasting a fixed 2 seconds.
+
+\subsubsection{Reward Function}
+While the underlying SUMO-RL framework supports various native reward formulations, including changes in cumulative vehicle delay, average velocity metrics, pressure optimization, and carbon dioxide emissions, this study implements the specialized \textit{"queue"} reward function \cite{reward-list}. The reward is mathematically defined as the negative sum of all queued vehicles across all incoming lanes feeding into the intersection agent \cite{q-reward}:
+
+\begin{equation}
+    R_t = - \sum_{i=1}^{n} \text{HaltingVehicles}_i(t)
+\end{equation}
 
 \section{Experiment Setup}
+mention that we have 23 traffic lights and therefore 23 agents in total. they all share the same policy/ same mind. we just train one giant model that all agents share. that is correct, is it???
 \subsection{Proximal Policy Optimization}
 as a policy-gradient method, proximal policy optimization (PPO) learns only from the recent experiences that the agent collected.
 

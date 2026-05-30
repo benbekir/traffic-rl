@@ -7,7 +7,7 @@ NETWORK_DIR = Path("simulations/networks/jkpg")
 RECORDINGS_DIR = Path("simulations/recordings")
 
 DEFAULT_DELTA_TIME = 5
-DEFAULT_NUM_SECONDS = 8600
+DEFAULT_NUM_SECONDS = 8400
 
 def make_env(scale: float = 1, max_halting_vehicles: int = 800, use_gui: bool = False, recording_name: str = None):
     # Ensure recording directory exists
