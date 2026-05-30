@@ -134,56 +134,46 @@ While the underlying SUMO-RL framework supports various native reward formulatio
 \end{equation}
 
 \section{Experiment Setup}
-mention that we have 23 traffic lights and therefore 23 agents in total. they all share the same policy/ same mind. we just train one giant model that all agents share. that is correct, is it???
-\subsection{Proximal Policy Optimization}
-as a policy-gradient method, proximal policy optimization (PPO) learns only from the recent experiences that the agent collected.
 
-\subsection{Deep Q Networks}
-A Deep Q-Network (DQN) is a reinforcement learning algorithm that combines traditional Q-learning with deep neural networks.
+\subsection{Reinforcement Learning Agents}
+In this study, we evaluate and compare two distinct classes of DRL architectures: a value-based DQN method and a policy-gradient PPO method.
 
-\begin{table}[h]
-\centering
-\caption{Overview of the traffic signal control system.}
-\label{tab:project_overview}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Parameter} & \textbf{Description} \\
-\hline
-Method    & Deep Q-Network (DQN) and Proximal Policy Optimization (PPO) \\
-\hline
-Technique & Curriculum Learning with three traffic density stages \\
-\hline
-          & (0.75, 0.875, and 1.0 scale factors) \\
-Scenario  & Real-world road network of Jönköping, Sweden \\
-\hline
-Platform  & Simulation of Urban Mobility (SUMO) \\
-\hline
-\end{tabular}
-\end{table}
+\subsubsection{Deep Q-Networks (DQN)}
+Deep Q-Networks combine traditional Q-learning with deep neural networks to approximate the optimal action-value function. DQN is an off-policy algorithm that stores past experiences in a large replay buffer, allowing it to sample random, uncorrelated historical batches to stabilize training. During evaluation, the agent greedily selects actions with the estimated Q-values, picking the highest scoring traffic phase configuration for a given state.
+
+\subsubsection{Proximal Policy Optimization (PPO)}
+Proximal Policy Optimization is an on-policy, actor-critic framework that directly optimizes the agent's control policy. Instead of assigning strict value scores to actions, PPO maps states directly to a probability distribution over the available traffic phases. To decrease the chance of catastrophic forgetting off destabilizing gradient steps during chaotic traffic conditions, PPO clips its policy updates within a safe bound. It learns strictly from current environment steps, discarding data after each update phase.
+
+\subsection{Hyperparameter Configurations and Training Protocol}
+Both algorithms were initialized using parameter baselines optimized over a preliminary 100-episode training phase. Using these optimized baselines, a curriculum learning strategy was deployed to progressively scale the traffic demand density across three distinct multiplier steps: $0.75$, $0.875$, and $1.0$. For the final evaluation, the DQN agent was trained for 100 episodes per curriculum phase to maximize historical experience accumulation. However, initial trials showed that PPO's performance degraded with the extended training horizon. To mitigate this policy degradation, the training duration for the PPO agent was shortened to 50 episodes per curriculum phase. The finalized hyperparameter configurations utilized for this execution are compiled in Table~\ref{tab:hyperparams}.
 
 \begin{table}[h]
 \centering
-\caption{Overview of the traffic signal control system.}
-\label{tab:system-overview}
-\begin{tabular}{|c|p{7cm}|}\hline
-\textbf{Parameter} & \textbf{Description} \\
+\caption{Hyperparameter configurations for DQN and PPO agents.}
+\label{tab:hyperparams}
+\begin{tabular}{llc}
 \hline
-Method & Deep Q-Learning (DQN) and Proximal Policy Optimization (PPO) \\
-\hline
-Technique & Curriculum Learning with parameters and three traffic density stages (0.75, 0.875, and 1.0 scale factors)\\
-\hline
-Scenario & Jönköping city center road network (multi-intersection) \\
-\hline
-Platform & SUMO (Simulation of Urban Mobility) \\
-\hline
-Agent Type & Multi-Agent with shared policy (parameter sharing) \\
-\hline
-Reward Function & Queue-based penalty \\
-\hline
+\textbf{Algorithm} & \textbf{Hyperparameter} & \textbf{Value} \\ \hline
+\textbf{DQN}       & Learning Rate & $1 \times 10^{-3}$ \\
+                   & Buffer Size & 500,000 \\
+                   & Batch Size & 128 \\
+                   & Exploration Fraction & 0.1 \\
+                   & Initial Epsilon ($\epsilon_{\text{init}}$) & 1.0 \\
+                   & Final Epsilon ($\epsilon_{\text{final}}$) & 0.05 \\ \hline
+\textbf{PPO}       & Learning Rate & $1 \times 10^{-4}$ \\
+                   & Rollout Horizon ($n_{\text{steps}}$) & 512 \\
+                   & Batch Size & 256 \\
+                   & Epochs per Update ($n_{\text{epochs}}$) & 10 \\
+                   & Entropy Coefficient ($\text{ent\_coef}$) & 0.2 \\
+                   & Clip Range ($\epsilon_{\text{clip}}$) & 0.3 \\ \hline
 \end{tabular}
 \end{table}
 
-Ben, choose one of the graphs.
+The DQN agent implements an $\epsilon$-greedy exploration strategy where the exploration rate lineary decays from an initial value of $1.0$ down to a final value of $0.05$ across the first 10\% of the total training steps. It uses an experience replay memory buffer of 500,000 steps to maintain a large historical distribution of past traffic patterns, sampling mini-batches of 128 experiences per optimization step.
+
+Conversely, the PPO agent operates under a more conservative learning rate of $1 \times 10^{-4}$ to stabilize gradient updates. The agent collects experiences over 512 steps before performing 10 optimization epochs across mini-batches of 256 steps. To preserve policy exploration, an elevated entropy coefficient of 0.2 was selected. Furthermore, a policy clipping threshold of 0.3 enforces strict bounding constraints on the policy updates, preventing catastrophic divergence when the agent is exposed to severe rush-hour gridlock configurations.
+
+Every configuration was evaluated across 10 independent random seeds to guarantee statistical significance and capture structural performance variance.
 
 \section{Results}
 
