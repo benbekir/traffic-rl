@@ -30,17 +30,13 @@ Jönköping, Sweden}}
 \maketitle
 
 \begin{abstract}
-TODO
+In modern smart cities, traditional fixed-time traffic signal controllers are increasingly unequipped to handle dynamic urban congestion, leading to substantial economic time loss and environmental degradation. This paper presents a comparative empirical evaluation of Deep Reinforcement Learning (DRL) frameworks applied to adaptive Traffic Signal Control (TSC) within a microscopic Simulation of Urban MObility (SUMO) environment modeled after the city center of Jönköping, Sweden. We investigate a network including of 23 traffic lights and complex roundabout-to-intersection junctions under simulated rush-hour demand profiles. A value-based Deep Q-Network (DQN) framework and an on-policy Proximal Policy Optimization (PPO) framework were deployed using a multi-agent structure with homogeneous parameter sharing across all controllers. The agents were trained using a curriculum learning strategy to optimize a queue-minimization reward function. The empirical results across ten random seeds demonstrate that both learning agents significantly outperform non-adaptive baselines. The deterministic evaluation policy of the DQN agent achieved the highest local optimizations, yielding an 87.2\% reduction in vehicle waiting times, an 82.8\% reduction in stops per vehicle, and a 30.9\% increase in average trip velocities. However, our analysis highlighted a critical structural trade-off: by aggressively minimizing localized queues along major roads, the independent agents introduced a boundary gating effect that restricted minor incoming roads, resulting in an 11.0\% deficit in total completed trips during peak demand. These findings suggest that while independent multi-agent DRL with parameter sharing offers massive corridor clearing capabilities, balancing network throughput requires future transition toward reward balancing or fully cooperative, communication-based Multi-Agent Reinforcement Learning frameworks.
 \end{abstract}
 
 \section{Introduction}
 Rapid global urbanization and rising populations create a demand for traffic throughput optimization in order to save time, money, and resources, while increasing road safety. Traditional Traffic Signal Control (TSC) systems remain inefficient, relying on static, pre-programmed algorithms that fail to adapt to real-time traffic fluctuations. At the same time, artificial intelligence is experiencing widespread integration across decision-making domains and allows for adaptive, intelligent control systems that offer a direct path toward mitigating urban gridlock.
 
 This paper focuses on the city center of Jönköping, Sweden, as a case study for algorithmic intersection optimization. Jönköping is chosen as its road network experiences severe bottlenecks during peak rush hours, primarily driven by roundabouts feeding directly into closely spaced intersections controlled by traffic lights. Because these existing controllers are based on non-adaptive phase-switching strategies, they are not able to mitigate the compounding queue lengths that propagate across the interconnected junctions. Implementing a Deep Reinforcement Learning (DRL) framework provides an empirical evaluation of how Deep Learning can impact multi-intersection traffic throughput.
-
-\subsection{Structure of this paper}
-TODO
-% how do our neural networks actually look like? what is the input, what shape do they have, and what is the output?
 
 \section{Background}
 
@@ -136,13 +132,13 @@ While the underlying SUMO-RL framework supports various native reward formulatio
 \section{Experiment Setup}
 
 \subsection{Reinforcement Learning Agents}
-In this study, we evaluate and compare two distinct classes of DRL architectures: a value-based DQN method and a policy-gradient PPO method.
+To control the target Jönköping network, the problem is structured as an Independent Multi-Agent Reinforcement Learning (I-MARL) framework comprising 23 distinct traffic light agents. To ensure computational efficiency and rapid convergence across a network of this scale, a homogeneous parameter-sharing architecture was implemented. Under this paradigm, all 23 agents feed their experiences into a single, centralized policy network during training and pull weights from this shared network during execution. While the agents act independently and make decentralized phase choices based on their observations, parameter sharing enables them to collectively optimize a generalized traffic control policy. Within this framework, we evaluate and compare two distinct classes of DRL architectures: a value-based DQN method and a policy-gradient PPO method.
 
 \subsubsection{Deep Q-Networks (DQN)}
-Deep Q-Networks combine traditional Q-learning with deep neural networks to approximate the optimal action-value function. DQN is an off-policy algorithm that stores past experiences in a large replay buffer, allowing it to sample random, uncorrelated historical batches to stabilize training. During evaluation, the agent greedily selects actions with the estimated Q-values, picking the highest scoring traffic phase configuration for a given state.
+Deep Q-Networks combine traditional Q-learning with deep neural networks to approximate the optimal action-value function \cite{dqn}. DQN is an off-policy algorithm that stores past experiences in a large replay buffer, allowing it to sample random, uncorrelated historical batches to stabilize training. During evaluation, the agent greedily selects actions with the estimated Q-values, picking the highest scoring traffic phase configuration for a given state.
 
 \subsubsection{Proximal Policy Optimization (PPO)}
-Proximal Policy Optimization is an on-policy, actor-critic framework that directly optimizes the agent's control policy. Instead of assigning strict value scores to actions, PPO maps states directly to a probability distribution over the available traffic phases. To decrease the chance of catastrophic forgetting off destabilizing gradient steps during chaotic traffic conditions, PPO clips its policy updates within a safe bound. It learns strictly from current environment steps, discarding data after each update phase.
+Proximal Policy Optimization is an on-policy, actor-critic framework that directly optimizes the agent's control policy \cite{ppo}. Instead of assigning strict value scores to actions, PPO maps states directly to a probability distribution over the available traffic phases. To decrease the chance of catastrophic forgetting off destabilizing gradient steps during chaotic traffic conditions, PPO clips its policy updates within a safe bound. It learns strictly from current environment steps, discarding data after each update phase.
 
 \subsection{Hyperparameter Configurations and Training Protocol}
 Both algorithms were initialized using parameter baselines optimized over a preliminary 100-episode training phase. Using these optimized baselines, a curriculum learning strategy was deployed to progressively scale the traffic demand density across three distinct multiplier steps: $0.75$, $0.875$, and $1.0$. For the final evaluation, the DQN agent was trained for 100 episodes per curriculum phase to maximize historical experience accumulation. However, initial trials showed that PPO's performance degraded with the extended training horizon. To mitigate this policy degradation, the training duration for the PPO agent was shortened to 50 episodes per curriculum phase. The finalized hyperparameter configurations utilized for this execution are compiled in Table~\ref{tab:hyperparams}.
@@ -177,6 +173,38 @@ Every configuration was evaluated across 10 independent random seeds to guarante
 
 \section{Results}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{resources/results.png}
+\caption{Multi-run traffic signal optimization results across 10 random seeds. Clockwise from top-left: (a) Cumulative completed vehicles over the 8,400-second timeline with 95\% confidence intervals; (b) Probability density distribution of global vehicle time loss; (c) Average trip velocity mapped against route distance; (d) Scatter visualization contrasting average vehicle stops against mean waiting times (seconds).}
+\label{fig:results}
+\end{figure}
+
+The empirical results collected across 10 independent random seeds demonstrate that both DRL frameworks outperform the baseline controller across most metrics. As detailed in Table~\ref{tab:improvement}, the Deep Q-Network (DQN) agent achieved the most significant optimizations, engineering a massive \textbf{87.2\% reduction in average vehicle waiting time} and an \textbf{82.8\% reduction in stops per vehicle} compared to the static baseline. The Proximal Policy Optimization (PPO) agent also yielded substantial throughput enhancements, reducing waiting times by 64.0\% and vehicular stops by 54.2\%. 
+
+\begin{table}[h]
+\centering
+\caption{Improvement over baseline (10-run average).}
+\label{tab:improvement}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{DQN} & \textbf{PPO} \\
+\hline
+Waiting time      & \textbf{-87.2\%} & -64.0\% \\
+\hline
+Time loss         & \textbf{-77.3\%} & -55.2\% \\
+\hline
+Stops per vehicle & \textbf{-82.8\%} & -54.2\% \\
+\hline
+Average speed     & \textbf{+30.9\%} & +20.5\% \\
+\hline
+Completed trips   & -11.0\%          & -6.8\%  \\
+\hline
+\end{tabular}
+\end{table}
+
+This performance difference is also illustrated in Figure~\ref{fig:results}. The global time loss distribution (top-right plot) highlights that the baseline traffic system exhibits a heavily skewed tail, confirming severe gridlocks across the network, while both learning agents compress this distribution. DQN tightly centers vehicle time loss around a highly efficient peak below 50 seconds. This efficiency translates into higher network velocities, as shown in the velocity-distance profile in Table~\ref{tab:summary}, the DQN agent maintains an average trip speed of $8.81 \text{ m/s}$ ($+30.9\%$), whereas PPO achieves $8.10 \text{ m/s}$ ($+20.5\%$), both consistently outperforming the baseline profile ($6.73 \text{ m/s}$).
+
 \begin{table}[h]
 \centering
 \caption{Performance comparison across 10 runs (averaged).}
@@ -202,30 +230,20 @@ Simulation end time    & 8{,}398s  & 8{,}398s         & 8{,}157s \\
 \end{tabular}
 \end{table}
 
+The superiority of DQN over PPO in this environment can be traced back to their architectural differences. Because DQN computes explicit action-value estimations and executes a deterministic \textit{argmax} selection policy during evaluation, it enforces stable phase-clearing queues. Conversely, PPO's on-policy framework samples actions from a probability distribution. Even during evaluation, there is variance in PPO's policy, causing minor policy shifts that are less effective at resolving the queues. This variance is reflected in the wider 95\% confidence intervals shaded along PPO's trajectories in the top-left plot of Figure~\ref{fig:results}.
 
-\begin{table}[h]
-\centering
-\caption{Improvement over baseline (10-run average).}
-\label{tab:improvement}
-\begin{tabular}{|l|c|c|}
-\hline
-\textbf{Metric} & \textbf{DQN} & \textbf{PPO} \\
-\hline
-Waiting time      & \textbf{-87.2\%} & -64.0\% \\
-\hline
-Time loss         & \textbf{-77.3\%} & -55.2\% \\
-\hline
-Stops per vehicle & \textbf{-82.8\%} & -54.2\% \\
-\hline
-Average speed     & \textbf{+30.9\%} & +20.5\% \\
-\hline
-Completed trips   & -11.0\%          & -6.8\%  \\
-\hline
-\end{tabular}
-\end{table}
+However, an important trade-off is observed regarding the total volume of completed trips. The baseline system successfully processes 5,837 vehicles, while PPO and DQN exhibit a deficit of $-6.8\%$ and $-11.0\%$ completed trips, respectively. In microscopic traffic modeling, this discrepancy indicates a classic reinforcement learning phenomenon known as \textit{boundary gating}. Because the reward function heavily penalizes the absolute number of halting vehicles inside the visible intersection lanes ($R_t = - \sum \text{HaltingVehicles}_i$), the agents learn that the most effective way to minimize internal intersection queues is to prolong green phases for the main roads (such as Kungsgatan).
 
+While this strategy creates a highly fluid experience for vehicles on the main roads, it starves minor incoming lanes. Consequently, compounding queues build up outside the active simulation boundaries, causing SUMO to restrict or delay new vehicle spawning. This explains why the cumulative completed trips curve in the top-left plot shows the baseline pulling ahead during the peak evening rush hour (after second 5,000). The baseline prioritizes all lanes equally the cost of global gridlock, whereas the adaptive DRL agents prioritize network fluidity by restricting input volumes during peak directional pressure.
 
 \section{Conclusion}
+This paper presented an empirical evaluation of DRL frameworks for adaptive TSC within a simulation of the Jönköping city center network.
+
+Our analysis revealed that the DQN agent achieved the most deterministic and aggressive optimization, slashing vehicle waiting times by 87.2\% and vehicle stops by 82.8\% while significantly elevating average corridor speeds. PPO also showed improvements, though its stochastic policy induced a higher variance that proved less efficient at clearing congestion spikes.
+
+The results highlight the trade-off between intersection efficiency and global network throughput. While the queue-minimization reward function successfully optimized vehicle velocity and minimized delays for primary traffic lanes, it also incentivized the agents to ignore minor roads, resulting in a deficit of up to 11.0\% in completed network trips during severe evening rush-hour peaks.
+
+Future work could focus on rectifying this deficiency. To prevent agents from isolating secondary roads, the reward function can be augmented with spatial metrics or queue-length thresholds that penalize extreme asymmetry across incoming lanes. Additionally, expanding the independent multi-agent setup into a fully cooperative, communication-based Multi-Agent Reinforcement Learning framework will allow adjacent intersections to actively coordinate phase changes, smoothing macro-level transit waves across Jönköping’s broader urban infrastructure.
 
 \bibliographystyle{IEEEtran}
 \bibliography{abrv,references}
