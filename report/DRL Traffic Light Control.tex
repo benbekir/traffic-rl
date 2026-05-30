@@ -26,46 +26,38 @@ Jönköping, Sweden}
 \IEEEauthorblockA{\textit{School of Engineering}\\
 \textit{Jönköping University} \\
 Jönköping, Sweden}}
-}
 
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+TODO
 \end{abstract}
 
-\begin{IEEEkeywords}
-component, formatting, style, styling, insert.
-\end{IEEEkeywords}
-
 \section{Introduction}
-\subsection{Motivation}
+Rapid global urbanization and rising populations create a demand for traffic throughput optimization in order to save time, money, and resources, while increasing road safety. Traditional Traffic Signal Control (TSC) systems remain inefficient, relying on static, pre-programmed algorithms that fail to adapt to real-time traffic fluctuations. At the same time, artificial intelligence is experiencing widespread integration across decision-making domains and allows for adaptive, intelligent control systems that offer a direct path toward mitigating urban gridlock.
+
+This paper focuses on the city center of Jönköping, Sweden, as a case study for algorithmic intersection optimization. Jönköping is chosen as its road network experiences severe bottlenecks during peak rush hours, primarily driven by roundabouts feeding directly into closely spaced intersections controlled by traffic lights. Because these existing controllers are based on non-adaptive phase-switching strategies, they are not able to mitigate the compounding queue lengths that propagate across the interconnected junctions. Implementing a Deep Reinforcement Learning (DRL) framework provides an empirical evaluation of how Deep Learning can impact multi-intersection traffic throughput.
 
 \subsection{Structure of this paper}
-- What are SUMO limitations?
-- Do we train on multiple scenarios, like “rush hours” and low traffic conditions, or do we only have normal traffic?
-- Do we use DQN or are there also other choices like PPO (is PPO able to combine with neural nets?)?
-- do we make use of curriculum learning?
-- how do our neural networks actually look like? what is the input, what shape do they have, and what is the output?
-
-a good starting tutorial on how to generate traffic scenarios can be found here \cite{sumotutorial}.
-
-- at the end, compare normal (static) traffic light with our solution. if possible, the static traffic light control should be decently good. maybe its possible to use a real example?
+TODO
+% how do our neural networks actually look like? what is the input, what shape do they have, and what is the output?
 
 \section{Background}
-\subsection{SUMO}
-\subsection{Proximal Policy Optimization}
-as a policy-gradient method, proximal policy optimization (PPO) learns only from the recent experiences that the agent collected.
 
-\subsection{Deep Q Networks}
-A Deep Q-Network (DQN) is a reinforcement learning algorithm that combines traditional Q-learning with deep neural networks.
+\subsection{SUMO}
+Simulation of Urban MObility (SUMO) is an open-source traffic simulation suite designed to handle large-scale road networks \cite{sumo}. The platform allows for modeling of streets, vehicles, and traffic signal logics. It incorporates the Traffic Control Interface (TraCI), an API that enables live state retrieval and manipulation of traffic light phases \cite{traci}. SUMO also offers fine-grained data logging capabilities for performance metrics, making it highly relevant for intelligent transportation experiments.
+
+\subsection{SUMO-RL}
+SUMO-RL is a specialized Python library designed to instantiate reinforcement learning environments using the SUMO simulator \cite{sumorl}. It wraps the raw simulation variables retrieved from TraCI API into a standardized interface and provides default function for observation spaces including lane density and queue lengths, and reward functions.
+
+\subsection{Stable Baselines3}
+Stable Baselines3 offers deep reinforcement learning algorithm implementations built upon the PyTorch framework \cite{stable-baselines3}. It provides optimized architectures for both value-based and policy-gradient methods, including Deep Q-Networks (DQN) and Proximal Policy Optimization (PPO), eliminating implementation bias and serving as a basis for comparative agent analysis.
 
 \section{Related Works}
+TODO: name 2-3 related works and quickly mention topic, method, and findings
 
 \section{Environment}
-
+a good starting tutorial on how to generate traffic scenarios can be found here \cite{sumotutorial}.
 \subsection{Network}
 map of sweden downloaded here: https://download.geofabrik.de/europe/sweden.html
 geojson polygon object created here: https://geojson.io/
@@ -118,7 +110,13 @@ im not sure about this yet
 
 - predefined reward functions: \url{https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py#L347}
 
-\section{Experiments}
+\section{Experiment Setup}
+\subsection{Proximal Policy Optimization}
+as a policy-gradient method, proximal policy optimization (PPO) learns only from the recent experiences that the agent collected.
+
+\subsection{Deep Q Networks}
+A Deep Q-Network (DQN) is a reinforcement learning algorithm that combines traditional Q-learning with deep neural networks.
+
 \begin{table}[h]
 \centering
 \caption{Overview of the traffic signal control system.}
