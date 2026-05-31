@@ -15,7 +15,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Deep Reinforcement Learning for Traffic Light Control in Jönköping}
+\title{Multi-Agent Deep Reinforcement Learning with Parameter Sharing for Adaptive Traffic Signal Control in Jönköping}
 
 \author{\IEEEauthorblockN{Ben Bekir Ertugrul}
 \IEEEauthorblockA{\textit{School of Engineering} \\
@@ -30,7 +30,7 @@ Jönköping, Sweden}}
 \maketitle
 
 \begin{abstract}
-In modern smart cities, traditional fixed-time traffic signal controllers are increasingly unequipped to handle dynamic urban congestion, leading to substantial economic time loss and environmental degradation. This paper presents a comparative empirical evaluation of Deep Reinforcement Learning (DRL) frameworks applied to adaptive Traffic Signal Control (TSC) within a microscopic Simulation of Urban MObility (SUMO) environment modeled after the city center of Jönköping, Sweden. We investigate a network including of 23 traffic lights and complex roundabout-to-intersection junctions under simulated rush-hour demand profiles. A value-based Deep Q-Network (DQN) framework and an on-policy Proximal Policy Optimization (PPO) framework were deployed using a multi-agent structure with homogeneous parameter sharing across all controllers. The agents were trained using a curriculum learning strategy to optimize a queue-minimization reward function. The empirical results across ten random seeds demonstrate that both learning agents significantly outperform non-adaptive baselines. The deterministic evaluation policy of the DQN agent achieved the highest local optimizations, yielding an 87.2\% reduction in vehicle waiting times, an 82.8\% reduction in stops per vehicle, and a 30.9\% increase in average trip velocities. However, our analysis highlighted a critical structural trade-off: by aggressively minimizing localized queues along major roads, the independent agents introduced a boundary gating effect that restricted minor incoming roads, resulting in an 11.0\% deficit in total completed trips during peak demand. These findings suggest that while independent multi-agent DRL with parameter sharing offers massive corridor clearing capabilities, balancing network throughput requires future transition toward reward balancing or fully cooperative, communication-based Multi-Agent Reinforcement Learning frameworks.
+In modern smart cities, traditional fixed-time traffic signal controllers are increasingly unequipped to handle dynamic urban congestion, leading to substantial economic time loss and environmental degradation. This paper presents a comparative empirical evaluation of Deep Reinforcement Learning (DRL) frameworks applied to adaptive Traffic Signal Control (TSC) within a microscopic Simulation of Urban MObility (SUMO) environment modeled after the city center of Jönköping, Sweden. We investigate a network including of 23 traffic lights and complex roundabout-to-intersection junctions under simulated rush-hour demand profiles. A value-based Deep Q-Network (DQN) framework and an on-policy Proximal Policy Optimization (PPO) framework were deployed using a multi-agent structure with homogeneous parameter sharing across all controllers. The agents were trained using a curriculum learning strategy to optimize a queue-minimization reward function. The empirical results across ten random seeds demonstrate that both learning agents significantly outperform non-adaptive baselines. The deterministic evaluation policy of the DQN agent achieved the highest local optimizations, yielding an 87.2\% reduction in vehicle waiting times, an 82.8\% reduction in stops per vehicle, and a 30.9\% increase in average trip velocities. Our analysis highlighted a trade-off between the minimization of queues along major roads and the boundary gating effect that restricted minor incoming roads, resulting in an 11.0\% deficit in total completed trips during peak demand. These findings suggest that while independent multi-agent DRL with parameter sharing offers massive corridor clearing capabilities, balancing network throughput requires future transition toward reward balancing or fully cooperative, communication-based Multi-Agent Reinforcement Learning frameworks.
 \end{abstract}
 
 \section{Introduction}
@@ -78,16 +78,7 @@ The urban road network was modeled following standard traffic scenario generatio
 
 These boundaries were selected specifically because they contain the main roads in the Jönköping city center, including a total of five roundabouts. A challenging bottleneck within this area occurs along Östra Strandgatan (visible in the lower-right section of the filter), where two major roundabouts operate close together and feed directly into intersections controlled by traffic signals.
 
-To construct the network, the command-line tools \textit{osmium} and \textit{osmfilter} were used to clip the Swedish map data down to the defined GeoJSON polygon. Next, irrelevant infrastructure was filtered out using OpenStreetMap highway attributes, including:
-
-\begin{itemize}
-    \item footway
-    \item path
-    \item pedestrian
-    \item steps
-    \item cycleway
-    \item bridleway
-\end{itemize}
+To construct the network, the command-line tools \textit{osmium} and \textit{osmfilter} were used to clip the Swedish map data down to the defined GeoJSON polygon. Next, irrelevant infrastructure was filtered out using OpenStreetMap highway attributes, including "footway," "path," "pedestrian," "steps," "cycleway," and "bridleway."
 
 Finally, the compiled map data was processed using the SUMO \textit{netconvert} utility to generate the executable simulation network. The SUMO network is visualized in figure~\ref{fig:net}.
 
@@ -182,6 +173,17 @@ The DQN agent implements an $\epsilon$-greedy exploration strategy where the exp
 Conversely, the PPO agent operates under a more conservative learning rate of $1 \times 10^{-4}$ to stabilize gradient updates. The agent collects experiences over 512 steps before performing 10 optimization epochs across mini-batches of 256 steps. To preserve policy exploration, an elevated entropy coefficient of 0.2 was selected. Furthermore, a policy clipping threshold of 0.3 enforces strict bounding constraints on the policy updates, preventing catastrophic divergence when the agent is exposed to severe rush-hour gridlock configurations.
 
 Every configuration was evaluated across 10 independent random seeds to guarantee statistical significance and capture structural performance variance.
+
+\subsection{Gridlock Monitoring and Early Truncation}
+During the exploratory and early training phases, unoptimized policies frequently cause severe, irreversible gridlock across the Jönköping road network. If left unchecked, vehicles become entirely stationary, preventing the agents from experiencing new state transitions and causing gradient updates to stall on repetitive, high-penalty states. To stabilize the training loop, a custom environment wrapper, designated as the \textit{Gridlock Monitor}, was implemented. 
+
+At each environment step, the monitor audits the global state of the simulation by computing the total number of halting vehicles across every active edge in the SUMO network:
+
+\begin{equation}
+    V_{\text{halting}} = \sum_{e \in E} \text{HaltingVehicles}_e(t)
+\end{equation}
+
+Where $E$ represents the set of all network edges. If $V_{\text{halting}}$ reaches a threshold of $800$ vehicles, the current simulation episode is considered a systemic failure and truncated early. The agents receive a massive negative penalty of $-100,000.0$ to punish actions that led to total network immobility and forcing both DQN and PPO to prioritize global network viability early in the optimization process.
 
 \section{Results}
 
